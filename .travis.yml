@@ -22,11 +22,6 @@ jobs:
       name: Unit tests
       script:
         - ./flutter/bin/flutter test
-    - name: Analyze
-      script:
-        - ./flutter/bin/flutter clean
-        - ./flutter/bin/flutter pub run build_runner build --enable-experiment non-nullable
-        - ./flutter/bin/flutter analyze
     - name: Build
       script:
         - ./flutter/bin/flutter build aot
