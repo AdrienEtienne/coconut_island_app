@@ -1,4 +1,6 @@
-# coconut_island_app
+[![Build Status](https://travis-ci.com/AdrienEtienne/coconut_island_app.svg?branch=master)](https://travis-ci.com/AdrienEtienne/coconut_island_app)
+
+# Coconut Island Mobile App
 
 A new Flutter project.
 
