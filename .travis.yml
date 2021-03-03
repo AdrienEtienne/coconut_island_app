@@ -12,9 +12,9 @@ addons:
 before_script:
   - git clone https://github.com/flutter/flutter.git -b stable
   - ./flutter/bin/flutter doctor
-  - flutter clean
-  - flutter packages pub upgrade
-  - flutter pub run build_runner build
+  - ./flutter/bin/flutter clean
+  - ./flutter/bin/flutter packages pub upgrade
+  - ./flutter/bin/flutter pub run build_runner build
 cache:
   directories:
     - $HOME/.pub-cache
