@@ -22,7 +22,12 @@ jobs:
       name: Unit tests
       script:
         - ./flutter/bin/flutter test
-    - name: Build
+    - name: Build bundle
       script:
-        - ./flutter/bin/flutter build aot
         - ./flutter/bin/flutter build bundle
+    - name: Build web
+      script:
+        - ./flutter/bin/flutter build web
+    - name: Analyze
+      script:
+        - ./flutter/bin/flutter analyze
