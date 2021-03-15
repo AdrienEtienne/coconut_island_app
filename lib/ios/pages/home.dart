@@ -1,7 +1,10 @@
-import 'package:coconut_island_app/common/card.dart';
+import 'package:coconut_island_app/app/widgets/app_version.dart';
+import 'package:coconut_island_app/ios/widgets/CupertinoPopupSurfaceBottom.dart';
+import 'package:coconut_island_app/widgets/card.dart';
 import 'package:coconut_island_app/style.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+
+import '../../images.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -20,34 +23,25 @@ class HomePage extends StatelessWidget {
             showCupertinoModalPopup(
               context: context,
               builder: (BuildContext buildContext) {
-                return CupertinoPopupSurface(
-                  isSurfacePainted: false,
+                return CupertinoPopupSurfaceBottom(
+                  middle: const Text("About"),
+                  trailing: const Text("OK"),
                   child: Container(
-                    height: MediaQuery.of(context).size.height * 0.9,
-                    width: MediaQuery.of(context).size.width * 1,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: const Color(lightColor),
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.all(paddingMd),
-                              child: const Text("About"),
-                            ),
-                            CupertinoButton(
-                              child: const Text("OK"),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ],
+                      border: Border(
+                        top: BorderSide(
+                          color: getBorderColor(ColorTheme.None),
                         ),
-                        const Text("What else?")
-                      ],
+                        bottom: BorderSide(
+                          color: getBorderColor(ColorTheme.None),
+                        ),
+                      ),
+                      color: const Color(whiteColor),
+                    ),
+                    padding: EdgeInsets.all(paddingMd),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [const Text("Version"), AppVersionWidget()],
                     ),
                   ),
                 );
@@ -72,7 +66,7 @@ class HomePage extends StatelessWidget {
                 ),
                 Image(
                   height: 100,
-                  image: AssetImage("assets/images/spring_tree.png"),
+                  image: springTreeImage,
                 )
               ],
             ),
@@ -88,7 +82,7 @@ class HomePage extends StatelessWidget {
                   )),
                   Image(
                     height: 100,
-                    image: AssetImage("assets/images/veggies.png"),
+                    image: veggiesImage,
                   )
                 ],
               ),
