@@ -1,4 +1,3 @@
-import 'package:coconut_island_app/app/blocs/app_version_cubit.dart';
 import 'package:coconut_island_app/app/repositories/app_repository.dart';
 import 'package:coconut_island_app/ios/pages/home.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,11 +17,10 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return RepositoryProvider.value(
       value: appRepository,
-      child: BlocProvider(
-        create: (_) => AppVersionCubit(appRepository),
-        child: CupertinoApp(
-          title: 'Coconut Island',
-          home: HomePage(),
+      child: CupertinoApp(
+        title: 'Coconut Island',
+        home: HomePage(
+          appRepository: this.appRepository,
         ),
       ),
     );

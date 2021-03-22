@@ -1,12 +1,24 @@
+import 'package:coconut_island_app/app/blocs/app_version_cubit.dart';
+import 'package:coconut_island_app/app/data_providers/date_time_provider.dart';
+import 'package:coconut_island_app/app/repositories/app_repository.dart';
 import 'package:coconut_island_app/app/widgets/app_version.dart';
 import 'package:coconut_island_app/ios/widgets/CupertinoPopupSurfaceBottom.dart';
 import 'package:coconut_island_app/widgets/card.dart';
 import 'package:coconut_island_app/style.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../images.dart';
 
 class HomePage extends StatelessWidget {
+  const HomePage({
+    Key key,
+    @required this.appRepository,
+  })  : assert(appRepository != null),
+        super(key: key);
+
+  final AppRepository appRepository;
+
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -39,9 +51,12 @@ class HomePage extends StatelessWidget {
                       color: const Color(whiteColor),
                     ),
                     padding: EdgeInsets.all(paddingMd),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [const Text("Version"), AppVersionWidget()],
+                    child: BlocProvider(
+                      create: (_) => AppVersionCubit(appRepository),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [const Text("Version"), AppVersionWidget()],
+                      ),
                     ),
                   ),
                 );
@@ -59,9 +74,18 @@ class HomePage extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: Text(
-                    'Mars',
-                    style: TextStyle(fontSize: fontSizeLg),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        DateTimeProvider.getMonthName(),
+                        style: TextStyle(fontSize: fontSizeLg),
+                      ),
+                      Text(
+                        "Légumes et Fruits du mois",
+                        style: TextStyle(fontSize: fontSizeSm),
+                      ),
+                    ],
                   ),
                 ),
                 Image(
@@ -76,10 +100,13 @@ class HomePage extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(
+                    child: Center(
                       child: Text(
-                    'Recherche',
-                    style: TextStyle(fontSize: fontSizeLg),
-                  )),
+                        'Recherche',
+                        style: TextStyle(fontSize: fontSizeLg),
+                      ),
+                    ),
+                  ),
                   Image(
                     height: 100,
                     image: veggiesImage,
