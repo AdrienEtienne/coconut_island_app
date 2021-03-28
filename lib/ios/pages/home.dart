@@ -1,7 +1,8 @@
-import 'package:coconut_island_app/app/blocs/app_version_cubit.dart';
-import 'package:coconut_island_app/app/data_providers/date_time_provider.dart';
-import 'package:coconut_island_app/app/repositories/app_repository.dart';
+import 'package:coconut_island_app/app/blocs/blocs.dart';
+import 'package:coconut_island_app/app/blocs/produce_event.dart';
+import 'package:coconut_island_app/app/data_providers/data_providers.dart';
 import 'package:coconut_island_app/app/widgets/app_version.dart';
+import 'package:coconut_island_app/ios/pages/produces.dart';
 import 'package:coconut_island_app/ios/widgets/CupertinoPopupSurfaceBottom.dart';
 import 'package:coconut_island_app/widgets/card.dart';
 import 'package:coconut_island_app/style.dart';
@@ -11,14 +12,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../images.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({
-    Key key,
-    @required this.appRepository,
-  })  : assert(appRepository != null),
-        super(key: key);
-
-  final AppRepository appRepository;
-
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -51,12 +44,9 @@ class HomePage extends StatelessWidget {
                       color: const Color(whiteColor),
                     ),
                     padding: EdgeInsets.all(paddingMd),
-                    child: BlocProvider(
-                      create: (_) => AppVersionCubit(appRepository),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [const Text("Version"), AppVersionWidget()],
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [const Text("Version"), AppVersionWidget()],
                     ),
                   ),
                 );
@@ -69,30 +59,37 @@ class HomePage extends StatelessWidget {
         padding: EdgeInsets.all(paddingMd),
         shrinkWrap: true,
         children: [
-          CardWidget(
-            color: ColorTheme.Spring,
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        DateTimeProvider.getMonthName(),
-                        style: TextStyle(fontSize: fontSizeLg),
-                      ),
-                      Text(
-                        "Légumes et Fruits du mois",
-                        style: TextStyle(fontSize: fontSizeSm),
-                      ),
-                    ],
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, ProducesPage.routeName,
+                  arguments:
+                      ProducesPageArguments(DateTimeProvider.getMonth()));
+            },
+            child: CardWidget(
+              color: ColorTheme.Spring,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          DateTimeProvider.getMonthName(),
+                          style: TextStyle(fontSize: fontSizeLg),
+                        ),
+                        Text(
+                          "Légumes et Fruits du mois",
+                          style: TextStyle(fontSize: fontSizeSm),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Image(
-                  height: 100,
-                  image: springTreeImage,
-                )
-              ],
+                  Image(
+                    height: 100,
+                    image: springTreeImage,
+                  )
+                ],
+              ),
             ),
           ),
           CardWidget(
