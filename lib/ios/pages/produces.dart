@@ -1,7 +1,10 @@
 import 'package:coconut_island_app/app/blocs/blocs.dart';
 import 'package:coconut_island_app/app/data_providers/date_time_provider.dart';
+import 'package:coconut_island_app/extensions/extensions.dart';
 import 'package:coconut_island_app/style.dart';
+import 'package:diacritic/diacritic.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProducesPageArguments {
@@ -18,38 +21,83 @@ class ProducesPage extends StatelessWidget {
     final ProducesPageArguments args =
         ModalRoute.of(context).settings.arguments;
     BlocProvider.of<ProduceBloc>(context)
-        .add(ProducesRequested(month: args.month));
+        .add(ProducesRequested(month: args?.month));
+
+    final title = args?.month == null
+        ? 'Fruits et Légumes'
+        : DateTimeProvider.getMonthName();
 
     return CupertinoPageScaffold(
       backgroundColor: const Color(lightColor),
-      navigationBar: CupertinoNavigationBar(
-        border: const Border(),
-        backgroundColor: const Color(lightColor),
-        middle: Text(
-          DateTimeProvider.getMonthName(),
-        ),
-      ),
-      child: BlocBuilder<ProduceBloc, ProduceState>(
-        builder: (context, state) {
-          if (state is ProduceInitial || state is ProducesLoadInProgress) {
-            return Center(child: CupertinoActivityIndicator());
-          }
-          if (state is ProducesLoadSuccess) {
-            final produces = state.produces;
+      child: CustomScrollView(
+        slivers: [
+          CupertinoSliverNavigationBar(
+            border: const Border(),
+            backgroundColor: const Color(lightColor),
+            largeTitle: Text(title),
+          ),
+          BlocBuilder<ProduceBloc, ProduceState>(
+            builder: (context, state) {
+              if (state is ProducesLoadFailure) {
+                return SliverFillRemaining(
+                  child: Text(
+                    'Something went wrong!',
+                    style: TextStyle(color: CupertinoColors.destructiveRed),
+                  ),
+                );
+              }
+              if (state is ProducesLoadSuccess) {
+                final produces = state.produces;
 
-            return ListView(
-              children: produces
-                  .map(
-                    (e) => Text(e.name),
-                  )
-                  .toList(),
-            );
-          }
-          return Text(
-            'Something went wrong!',
-            style: TextStyle(color: CupertinoColors.destructiveRed),
-          );
-        },
+                final widgets = <Widget>[];
+
+                final groups = produces
+                    .groupBy((produce) => removeDiacritics(produce.name)[0]);
+
+                final border = const Border(
+                  bottom: BorderSide(
+                    width: 1,
+                    color: Color(gray200Color),
+                  ),
+                );
+
+                groups.forEach((key, elements) {
+                  widgets.add(
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: paddingMd, vertical: paddingSm),
+                      decoration: BoxDecoration(
+                        border: border,
+                      ),
+                      child: Text(key),
+                    ),
+                  );
+
+                  elements.forEach((element) {
+                    widgets.add(
+                      Container(
+                        padding: EdgeInsets.all(paddingMd),
+                        decoration: BoxDecoration(
+                            color: Color(whiteColor), border: border),
+                        child: Text(element.name),
+                      ),
+                    );
+                  });
+                });
+
+                return SliverList(
+                  delegate: SliverChildListDelegate(widgets),
+                );
+              }
+
+              return SliverFillRemaining(
+                child: Center(
+                  child: CupertinoActivityIndicator(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }

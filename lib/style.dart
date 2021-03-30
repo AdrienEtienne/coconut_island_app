@@ -2,7 +2,9 @@ import 'package:flutter/painting.dart';
 import 'package:tinycolor/tinycolor.dart';
 
 const marginMd = 15.0;
+const marginSm = 8.0;
 const paddingMd = marginMd;
+const paddingSm = marginSm;
 
 const fontSizeBase = 16.0;
 const fontSizeLg = fontSizeBase * 1.25;
