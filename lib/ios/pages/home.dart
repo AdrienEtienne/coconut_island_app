@@ -2,7 +2,6 @@ import 'package:coconut_island_app/app/data_providers/data_providers.dart';
 import 'package:coconut_island_app/app/widgets/app_version.dart';
 import 'package:coconut_island_app/ios/pages/produces.dart';
 import 'package:coconut_island_app/ios/widgets/CupertinoPopupSurfaceBottom.dart';
-import 'package:coconut_island_app/widgets/card.dart';
 import 'package:coconut_island_app/style.dart';
 import 'package:flutter/cupertino.dart';
 import '../../images.dart';
@@ -61,53 +60,81 @@ class HomePage extends StatelessWidget {
                   arguments:
                       ProducesPageArguments(DateTimeProvider.getMonth()));
             },
-            child: CardWidget(
-              color: ColorTheme.Spring,
-              child: Row(
+            child: Container(
+              margin: const EdgeInsets.only(bottom: marginMd),
+              padding: EdgeInsets.all(paddingMd),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [boxShadow],
+                gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [
+                    Color(spring1Color),
+                    Color(spring2Color),
+                  ],
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          DateTimeProvider.getMonthName(),
-                          style: TextStyle(fontSize: fontSizeLg),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        DateTimeProvider.getMonthName(),
+                        style: TextStyle(
+                          fontSize: fontSizeLg,
+                          color: Color(whiteColor),
                         ),
-                        Text(
-                          "Légumes et Fruits du mois",
-                          style: TextStyle(fontSize: fontSizeSm),
+                      ),
+                      Text(
+                        "Légumes et Fruits du mois",
+                        style: TextStyle(
+                          fontSize: fontSizeSm,
+                          color: Color(whiteColor),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  Image(
-                    height: 100,
-                    image: springTreeImage,
-                  )
                 ],
               ),
             ),
           ),
           GestureDetector(
             onTap: () => Navigator.pushNamed(context, ProducesPage.routeName),
-            child: CardWidget(
-              child: SizedBox(
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Center(
-                        child: Text(
-                          'Recherche',
-                          style: TextStyle(fontSize: fontSizeLg),
-                        ),
+            child: Container(
+              margin: const EdgeInsets.only(bottom: marginMd),
+              padding: const EdgeInsets.symmetric(
+                horizontal: paddingMd,
+                vertical: paddingSm,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [boxShadow],
+                color: Color(whiteColor),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Recherche',
+                        style: TextStyle(fontSize: fontSizeLg),
                       ),
-                    ),
-                    Image(
-                      height: 100,
-                      image: veggiesImage,
-                    )
-                  ],
-                ),
+                      Text(
+                        'Parmis tous les fruits et légumes',
+                        style: TextStyle(fontSize: fontSizeSm),
+                      ),
+                    ],
+                  ),
+                  Image(
+                    height: 80,
+                    image: veggiesImage,
+                  )
+                ],
               ),
             ),
           ),
