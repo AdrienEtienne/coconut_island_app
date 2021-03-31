@@ -1,4 +1,8 @@
 class DateTimeProvider {
+  static int getMonth() {
+    return DateTime.now().month;
+  }
+
   static String getMonthName() {
     switch (DateTime.now().month) {
       case 1:

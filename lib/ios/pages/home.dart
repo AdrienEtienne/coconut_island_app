@@ -1,24 +1,12 @@
-import 'package:coconut_island_app/app/blocs/app_version_cubit.dart';
-import 'package:coconut_island_app/app/data_providers/date_time_provider.dart';
-import 'package:coconut_island_app/app/repositories/app_repository.dart';
+import 'package:coconut_island_app/app/data_providers/data_providers.dart';
 import 'package:coconut_island_app/app/widgets/app_version.dart';
+import 'package:coconut_island_app/ios/pages/produces.dart';
 import 'package:coconut_island_app/ios/widgets/CupertinoPopupSurfaceBottom.dart';
-import 'package:coconut_island_app/widgets/card.dart';
 import 'package:coconut_island_app/style.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../images.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({
-    Key key,
-    @required this.appRepository,
-  })  : assert(appRepository != null),
-        super(key: key);
-
-  final AppRepository appRepository;
-
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -51,12 +39,9 @@ class HomePage extends StatelessWidget {
                       color: const Color(whiteColor),
                     ),
                     padding: EdgeInsets.all(paddingMd),
-                    child: BlocProvider(
-                      create: (_) => AppVersionCubit(appRepository),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [const Text("Version"), AppVersionWidget()],
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [const Text("Version"), AppVersionWidget()],
                     ),
                   ),
                 );
@@ -69,46 +54,84 @@ class HomePage extends StatelessWidget {
         padding: EdgeInsets.all(paddingMd),
         shrinkWrap: true,
         children: [
-          CardWidget(
-            color: ColorTheme.Spring,
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, ProducesPage.routeName,
+                  arguments:
+                      ProducesPageArguments(DateTimeProvider.getMonth()));
+            },
+            child: Container(
+              margin: const EdgeInsets.only(bottom: marginMd),
+              padding: EdgeInsets.all(paddingMd),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [boxShadow],
+                gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [
+                    Color(spring1Color),
+                    Color(spring2Color),
+                  ],
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         DateTimeProvider.getMonthName(),
-                        style: TextStyle(fontSize: fontSizeLg),
+                        style: TextStyle(
+                          fontSize: fontSizeLg,
+                          color: Color(whiteColor),
+                        ),
                       ),
                       Text(
                         "Légumes et Fruits du mois",
+                        style: TextStyle(
+                          fontSize: fontSizeSm,
+                          color: Color(whiteColor),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () => Navigator.pushNamed(context, ProducesPage.routeName),
+            child: Container(
+              margin: const EdgeInsets.only(bottom: marginMd),
+              padding: const EdgeInsets.symmetric(
+                horizontal: paddingMd,
+                vertical: paddingSm,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [boxShadow],
+                color: Color(whiteColor),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Recherche',
+                        style: TextStyle(fontSize: fontSizeLg),
+                      ),
+                      Text(
+                        'Parmis tous les fruits et légumes',
                         style: TextStyle(fontSize: fontSizeSm),
                       ),
                     ],
                   ),
-                ),
-                Image(
-                  height: 100,
-                  image: springTreeImage,
-                )
-              ],
-            ),
-          ),
-          CardWidget(
-            child: SizedBox(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Center(
-                      child: Text(
-                        'Recherche',
-                        style: TextStyle(fontSize: fontSizeLg),
-                      ),
-                    ),
-                  ),
                   Image(
-                    height: 100,
+                    height: 80,
                     image: veggiesImage,
                   )
                 ],

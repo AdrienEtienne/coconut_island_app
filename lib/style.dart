@@ -2,7 +2,9 @@ import 'package:flutter/painting.dart';
 import 'package:tinycolor/tinycolor.dart';
 
 const marginMd = 15.0;
+const marginSm = 8.0;
 const paddingMd = marginMd;
+const paddingSm = marginSm;
 
 const fontSizeBase = 16.0;
 const fontSizeLg = fontSizeBase * 1.25;
@@ -28,9 +30,12 @@ const pinkColor = 0xFFd63384;
 const redColor = 0xFFdc3545;
 const orangeColor = 0xFFfd7e14;
 const yellowColor = 0xFFffc107;
-const greenColor = 0xFF198754;
+const greenColor = 0xFF76b852;
 const tealColor = 0xFF20c997;
 const cyanColor = 0xFF0dcaf0;
+
+const spring1Color = 0xFF0ba360;
+const spring2Color = 0xFF3cba92;
 
 const primaryColor = blueColor;
 const secondaryColor = gray600Color;
