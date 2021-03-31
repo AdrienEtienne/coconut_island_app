@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import '../../images.dart';
 
 class HomePage extends StatelessWidget {
+  static const routeName = '/';
+
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(

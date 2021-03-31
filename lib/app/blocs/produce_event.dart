@@ -12,3 +12,12 @@ class ProducesRequested extends ProduceEvent {
   @override
   List<Object> get props => [this.month];
 }
+
+class ProduceRequested extends ProduceEvent {
+  final int id;
+
+  const ProduceRequested(this.id);
+
+  @override
+  List<Object> get props => [this.id];
+}
