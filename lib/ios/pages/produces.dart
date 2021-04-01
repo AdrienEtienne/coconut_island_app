@@ -55,18 +55,15 @@ class ProducesPage extends StatelessWidget {
                 final groups = produces
                     .groupBy((produce) => removeDiacritics(produce.name)[0]);
 
-                final border = const Border(
-                  bottom: BorderSide(
-                    width: 1,
-                    color: Color(gray200Color),
-                  ),
-                );
+                final border = Border(bottom: borderSide);
 
                 groups.forEach((key, elements) {
                   widgets.add(
                     Container(
                       padding: EdgeInsets.symmetric(
-                          horizontal: paddingMd, vertical: paddingSm),
+                        horizontal: paddingMd,
+                        vertical: paddingSm,
+                      ),
                       decoration: BoxDecoration(
                         border: border,
                       ),

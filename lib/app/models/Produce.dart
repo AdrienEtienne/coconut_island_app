@@ -1,3 +1,4 @@
+import 'package:coconut_island_app/app/data_providers/data_providers.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
@@ -22,6 +23,9 @@ class Seasonality extends Equatable {
       isAllYear: json['isAllYear'] as bool,
     );
   }
+
+  String get firstMonthName => DateTimeProvider.getMonthName(this.months.first);
+  String get lastMonthName => DateTimeProvider.getMonthName(this.months.last);
 }
 
 class Produce extends Equatable {

@@ -42,12 +42,31 @@ class ProducePage extends StatelessWidget {
                 final produce = state.produce;
 
                 return SliverList(
-                  delegate: SliverChildListDelegate([
-                    Text('// TODO'),
-                  ]),
+                  delegate: SliverChildListDelegate(
+                    [
+                      Container(
+                        padding: EdgeInsets.all(paddingMd),
+                        child: Text('Description de mon veggie'),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(paddingMd),
+                        decoration:
+                            BoxDecoration(border: Border(top: borderSide)),
+                        child: produce.seasonality.isAllYear
+                            ? Text('Disponible toute l\'année')
+                            : Text(
+                                "Disponible de ${produce.seasonality.firstMonthName} à ${produce.seasonality.lastMonthName}"),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(paddingMd),
+                        decoration:
+                            BoxDecoration(border: Border(top: borderSide)),
+                        child: Text('Préparations'),
+                      ),
+                    ],
+                  ),
                 );
               }
-
               return SliverFillRemaining(
                 child: Center(
                   child: CupertinoActivityIndicator(),

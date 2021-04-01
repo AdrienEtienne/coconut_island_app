@@ -31,12 +31,8 @@ class HomePage extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border(
-                        top: BorderSide(
-                          color: getBorderColor(ColorTheme.None),
-                        ),
-                        bottom: BorderSide(
-                          color: getBorderColor(ColorTheme.None),
-                        ),
+                        top: borderSide,
+                        bottom: borderSide,
                       ),
                       color: const Color(whiteColor),
                     ),
