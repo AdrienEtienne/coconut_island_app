@@ -78,5 +78,5 @@ var boxShadow = BoxShadow(
 
 var borderSide = const BorderSide(
   width: 1,
-  color: Color(gray400Color),
+  color: Color(gray300Color),
 );

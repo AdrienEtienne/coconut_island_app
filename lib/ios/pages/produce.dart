@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../images.dart';
+
 class ProducePageArguments {
   final int id;
   final String name;
@@ -19,63 +21,149 @@ class ProducePage extends StatelessWidget {
     final ProducePageArguments args = ModalRoute.of(context).settings.arguments;
     BlocProvider.of<ProduceBloc>(context).add(ProduceRequested(args.id));
 
-    return CupertinoPageScaffold(
-      backgroundColor: const Color(lightColor),
-      child: CustomScrollView(
-        slivers: [
-          CupertinoSliverNavigationBar(
-            border: const Border(),
-            backgroundColor: const Color(lightColor),
-            largeTitle: Text(args.name),
-          ),
-          BlocBuilder<ProduceBloc, ProduceState>(
-            builder: (context, state) {
-              if (state is ProduceLoadFailure) {
-                return SliverFillRemaining(
-                  child: Text(
-                    'Something went wrong!',
-                    style: TextStyle(color: CupertinoColors.destructiveRed),
-                  ),
-                );
-              }
-              if (state is ProduceLoadSuccess) {
-                final produce = state.produce;
+    return BlocBuilder<ProduceBloc, ProduceState>(
+      builder: (context, state) {
+        var slivers = [];
 
-                return SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      Container(
-                        padding: EdgeInsets.all(paddingMd),
-                        child: Text('Description de mon veggie'),
+        if (state is ProduceLoadFailure) {
+          slivers.add(
+            SliverFillRemaining(
+              child: Text(
+                'Something went wrong!',
+                style: TextStyle(color: CupertinoColors.destructiveRed),
+              ),
+            ),
+          );
+        } else if (state is ProduceLoadSuccess) {
+          final produce = state.produce;
+
+          slivers.add(
+            SliverToBoxAdapter(
+              child: Container(
+                color: Color(whiteColor),
+                padding: EdgeInsets.all(paddingMd),
+                child: Text('Description de mon veggie.'),
+              ),
+            ),
+          );
+
+          slivers.add(
+            SliverToBoxAdapter(
+              child: Container(
+                alignment: Alignment.centerRight,
+                color: Color(whiteColor),
+                padding: EdgeInsets.all(paddingMd),
+                margin: EdgeInsets.only(bottom: marginMd),
+                child: produce.seasonality.isAllYear
+                    ? Text('Disponible toute l\'année')
+                    : Text(
+                        "Disponible de ${produce.seasonality.firstMonthName} à ${produce.seasonality.lastMonthName}",
+                        style: TextStyle(fontSize: fontSizeSm),
                       ),
-                      Container(
-                        padding: EdgeInsets.all(paddingMd),
-                        decoration:
-                            BoxDecoration(border: Border(top: borderSide)),
-                        child: produce.seasonality.isAllYear
-                            ? Text('Disponible toute l\'année')
-                            : Text(
-                                "Disponible de ${produce.seasonality.firstMonthName} à ${produce.seasonality.lastMonthName}"),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(paddingMd),
-                        decoration:
-                            BoxDecoration(border: Border(top: borderSide)),
-                        child: Text('Préparations'),
-                      ),
-                    ],
-                  ),
-                );
-              }
-              return SliverFillRemaining(
-                child: Center(
-                  child: CupertinoActivityIndicator(),
+              ),
+            ),
+          );
+
+          final recettes = [
+            'Papillotes de poulet à l\'italienne au pesto',
+            'Saucisses fumées sauce au vin rouge et aux baies de genièvre',
+            'Tarte soleil épinards et féta'
+          ];
+          slivers.addAll([
+            SliverToBoxAdapter(
+              child: Container(
+                padding: EdgeInsets.all(paddingMd),
+                child: const Text(
+                  'Suggestions de Recettes',
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-              );
-            },
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Container(
+                height: 200.0,
+                margin: EdgeInsets.only(bottom: marginMd),
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: recettes.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      padding: EdgeInsets.all(paddingMd),
+                      margin: EdgeInsets.symmetric(horizontal: marginMd),
+                      decoration: new BoxDecoration(
+                        color: const Color(darkColor),
+                        image: new DecorationImage(
+                          fit: BoxFit.cover,
+                          colorFilter: new ColorFilter.mode(
+                              Colors.black.withOpacity(0.5), BlendMode.dstATop),
+                          image: recipeImage,
+                        ),
+                      ),
+                      child: Text(
+                        recettes[index],
+                        style: TextStyle(
+                            color: Color(whiteColor),
+                            fontWeight: FontWeight.bold),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ]);
+
+          final preparations = ['A l\'eau', 'A l\'huile', 'A la crème'];
+          slivers.add(
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  Container(
+                    padding: EdgeInsets.all(paddingMd),
+                    child: const Text(
+                      'Préparations',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  ...preparations.map(
+                    (e) => Container(
+                      padding: EdgeInsets.all(paddingMd),
+                      decoration: BoxDecoration(
+                        border: Border(bottom: borderSide),
+                        color: Color(whiteColor),
+                      ),
+                      child: Text(e),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        } else {
+          slivers.add(
+            SliverFillRemaining(
+              child: Center(
+                child: CupertinoActivityIndicator(),
+              ),
+            ),
+          );
+        }
+
+        return CupertinoPageScaffold(
+          backgroundColor: const Color(lightColor),
+          child: CustomScrollView(
+            shrinkWrap: true,
+            slivers: [
+              CupertinoSliverNavigationBar(
+                border: const Border(),
+                backgroundColor: const Color(lightColor),
+                largeTitle: Text(args.name),
+              ),
+              ...slivers.toList(),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
