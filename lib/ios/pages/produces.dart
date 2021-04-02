@@ -1,6 +1,7 @@
 import 'package:coconut_island_app/app/blocs/blocs.dart';
 import 'package:coconut_island_app/app/data_providers/date_time_provider.dart';
 import 'package:coconut_island_app/extensions/extensions.dart';
+import 'package:coconut_island_app/ios/pages/produce.dart';
 import 'package:coconut_island_app/style.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,7 +39,7 @@ class ProducesPage extends StatelessWidget {
           ),
           BlocBuilder<ProduceBloc, ProduceState>(
             builder: (context, state) {
-              if (state is ProducesLoadFailure) {
+              if (state is ProduceLoadFailure) {
                 return SliverFillRemaining(
                   child: Text(
                     'Something went wrong!',
@@ -54,18 +55,15 @@ class ProducesPage extends StatelessWidget {
                 final groups = produces
                     .groupBy((produce) => removeDiacritics(produce.name)[0]);
 
-                final border = const Border(
-                  bottom: BorderSide(
-                    width: 1,
-                    color: Color(gray200Color),
-                  ),
-                );
+                final border = Border(bottom: borderSide);
 
                 groups.forEach((key, elements) {
                   widgets.add(
                     Container(
                       padding: EdgeInsets.symmetric(
-                          horizontal: paddingMd, vertical: paddingSm),
+                        horizontal: paddingMd,
+                        vertical: paddingSm,
+                      ),
                       decoration: BoxDecoration(
                         border: border,
                       ),
@@ -75,11 +73,21 @@ class ProducesPage extends StatelessWidget {
 
                   elements.forEach((element) {
                     widgets.add(
-                      Container(
-                        padding: EdgeInsets.all(paddingMd),
-                        decoration: BoxDecoration(
-                            color: Color(whiteColor), border: border),
-                        child: Text(element.name),
+                      GestureDetector(
+                        onTap: () => Navigator.pushNamed(
+                                context, ProducePage.routeName,
+                                arguments: ProducePageArguments(
+                                    element.id, element.name))
+                            .then((value) {
+                          BlocProvider.of<ProduceBloc>(context)
+                              .add(ProducesRequested(month: args?.month));
+                        }),
+                        child: Container(
+                          padding: EdgeInsets.all(paddingMd),
+                          decoration: BoxDecoration(
+                              color: Color(whiteColor), border: border),
+                          child: Text(element.name),
+                        ),
                       ),
                     );
                   });
