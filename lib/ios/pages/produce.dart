@@ -47,6 +47,9 @@ class ProducePage extends StatelessWidget {
             ),
           );
 
+          final season = produce.seasonality.isAllYear
+              ? 'Disponible toute l\'année'
+              : "Disponible de ${produce.seasonality.firstMonthName} à ${produce.seasonality.lastMonthName}";
           slivers.add(
             SliverToBoxAdapter(
               child: Container(
@@ -54,12 +57,7 @@ class ProducePage extends StatelessWidget {
                 color: Color(whiteColor),
                 padding: EdgeInsets.all(paddingMd),
                 margin: EdgeInsets.only(bottom: marginMd),
-                child: produce.seasonality.isAllYear
-                    ? Text('Disponible toute l\'année')
-                    : Text(
-                        "Disponible de ${produce.seasonality.firstMonthName} à ${produce.seasonality.lastMonthName}",
-                        style: TextStyle(fontSize: fontSizeSm),
-                      ),
+                child: Text(season, style: TextStyle(fontSize: fontSizeSm)),
               ),
             ),
           );
@@ -72,12 +70,20 @@ class ProducePage extends StatelessWidget {
           slivers.addAll([
             SliverToBoxAdapter(
               child: Container(
-                padding: EdgeInsets.all(paddingMd),
-                child: const Text(
-                  'Suggestions de Recettes',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
+                  padding: EdgeInsets.all(paddingMd),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Suggestions de Recettes',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const Text(
+                        'Voir plus',
+                        style: TextStyle(fontSize: fontSizeSm),
+                      ),
+                    ],
+                  )),
             ),
             SliverToBoxAdapter(
               child: Container(
@@ -152,7 +158,6 @@ class ProducePage extends StatelessWidget {
         return CupertinoPageScaffold(
           backgroundColor: const Color(lightColor),
           child: CustomScrollView(
-            shrinkWrap: true,
             slivers: [
               CupertinoSliverNavigationBar(
                 border: const Border(),

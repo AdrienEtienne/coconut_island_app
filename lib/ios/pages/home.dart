@@ -1,9 +1,11 @@
+import 'package:coconut_island_app/app/blocs/blocs.dart';
 import 'package:coconut_island_app/app/data_providers/data_providers.dart';
 import 'package:coconut_island_app/app/widgets/app_version.dart';
 import 'package:coconut_island_app/ios/pages/produces.dart';
 import 'package:coconut_island_app/ios/widgets/CupertinoPopupSurfaceBottom.dart';
 import 'package:coconut_island_app/style.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../images.dart';
 
 class HomePage extends StatelessWidget {
@@ -11,6 +13,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<AppVersionCubit>().readAppVersion();
+
     return CupertinoPageScaffold(
       backgroundColor: const Color(lightColor),
       navigationBar: CupertinoNavigationBar(

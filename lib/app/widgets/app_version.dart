@@ -10,8 +10,6 @@ class AppVersionWidget extends StatefulWidget {
 class _AppVersionWidgetState extends State<AppVersionWidget> {
   @override
   Widget build(BuildContext context) {
-    context.read<AppVersionCubit>().readAppVersion();
-
     return BlocBuilder<AppVersionCubit, String>(
       builder: (context, state) {
         return Text(state);
