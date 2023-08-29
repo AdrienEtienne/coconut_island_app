@@ -14,7 +14,7 @@ class ProduceBloc extends Bloc<ProduceEvent, ProduceState> {
   @override
   Stream<ProduceState> mapEventToState(ProduceEvent event) async* {
     if (event is ProducesRequested) {
-      yield ProducesLoadInProgress();
+      yield ProduceLoadInProgress();
       try {
         final produces =
             await produceRepository.listProduces(month: event.month);
@@ -22,7 +22,15 @@ class ProduceBloc extends Bloc<ProduceEvent, ProduceState> {
             removeDiacritics(a.name).compareTo(removeDiacritics(b.name)));
         yield ProducesLoadSuccess(produces);
       } catch (_) {
-        yield ProducesLoadFailure();
+        yield ProduceLoadFailure();
+      }
+    } else if (event is ProduceRequested) {
+      yield ProduceLoadInProgress();
+      try {
+        final produce = await produceRepository.fetchProduce(event.id);
+        yield ProduceLoadSuccess(produce);
+      } catch (_) {
+        yield ProduceLoadFailure();
       }
     }
   }

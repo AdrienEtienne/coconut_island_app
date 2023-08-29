@@ -75,3 +75,8 @@ var boxShadow = BoxShadow(
     5.0, // Move to bottom 10 Vertically
   ),
 );
+
+var borderSide = const BorderSide(
+  width: 1,
+  color: Color(gray300Color),
+);

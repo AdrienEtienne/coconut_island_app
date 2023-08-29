@@ -7,7 +7,12 @@ class ProduceRepository {
   ProduceRepository(this._apiClient);
 
   Future<List<Produce>> listProduces({int month}) async {
-    final List<Produce> produces = await _apiClient.fetchProduces(month: month);
+    final produces = await _apiClient.fetchProduces(month: month);
     return produces;
+  }
+
+  Future<Produce> fetchProduce(int id) async {
+    final produce = await _apiClient.fetchProduce(id);
+    return produce;
   }
 }

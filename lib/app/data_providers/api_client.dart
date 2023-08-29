@@ -41,4 +41,35 @@ class ApiClient {
         .toList();
     return produces;
   }
+
+  Future<Produce> fetchProduce(int id) async {
+    const String getProduce = r'''
+    query ($id: Float!) {
+      produce (id: $id) {
+        id
+        name
+        seasonality {
+          months
+          isAllYear
+        }
+      }
+    }
+    ''';
+
+    final variables = Map<String, dynamic>();
+    variables['id'] = id;
+
+    final QueryOptions options = QueryOptions(
+      document: gql(getProduce),
+      variables: variables,
+    );
+    final QueryResult result = await _client.query(options);
+
+    if (result.hasException) {
+      print(result.exception.toString());
+    }
+
+    final produce = Produce.fromJson(result.data['produce'] as dynamic);
+    return produce;
+  }
 }

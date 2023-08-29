@@ -3,8 +3,10 @@ class DateTimeProvider {
     return DateTime.now().month;
   }
 
-  static String getMonthName() {
-    switch (DateTime.now().month) {
+  static String getMonthName([int month]) {
+    month = month ?? DateTime.now().month;
+
+    switch (month) {
       case 1:
         return "Janvier";
       case 2:
